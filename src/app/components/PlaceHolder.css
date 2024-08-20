@@ -1,0 +1,45 @@
+
+.placeHolder {
+    height: 58px;
+    border-bottom: 1px solid black;
+}
+.placeHolder-content {
+    display: flex;
+    align-items: center;
+    margin: 12px;
+    gap: 60px;
+}
+.user {
+    display: flex;
+    align-items: center;
+    /* margin-left: 3px; */
+    padding: 6px 6px 6px 0px;
+    border-radius: 4px;
+}
+.user:hover {
+    background-color: #b1aeae;
+}
+.avtar {
+    margin: 0px 6px;
+    width: 30px;
+}
+.username {
+    width: 72px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.notif-sidebar {
+    display: flex;
+    width: 74px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.notif-sidebar button {
+    padding: 6px;
+    border-radius: 4px;
+}
+
+.notif-sidebar button:hover {
+    background-color: #b1aeae;
+}

@@ -1,0 +1,24 @@
+/* General styles for all buttons within .user-action */
+.user-action button {
+    border: none;
+    padding: 10px 10px 10px 0px;
+    margin: 5px 0 5px 10px;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 92%;
+}
+
+/* Styling for hover state */
+.user-action button:hover {
+    background-color: #b1aeae;
+}
+
+/* Styling for selected state */
+.user-action button.selected {
+    background-color: rgb(255, 238, 206); /* Change background color when selected */
+    color: rgb(255, 106, 0); /* Change text color when selected */
+}

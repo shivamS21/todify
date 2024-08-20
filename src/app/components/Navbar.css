@@ -1,0 +1,7 @@
+.app-sidebar-container {
+    height: 100vh;
+    width: 280px;
+    background-color: #c4c4bf;
+    display: flex;
+    flex-direction: column;
+}
