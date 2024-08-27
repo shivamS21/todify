@@ -1,4 +1,10 @@
 /* General styles for all buttons within .user-action */
+.user-action {
+    margin-top: 4px;
+}
+.add-task {
+    color: rgb(249, 75, 31);
+}
 .user-action button {
     border: none;
     padding: 10px 10px 10px 0px;

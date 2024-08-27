@@ -1,0 +1,102 @@
+.task-editor {
+    flex-wrap: nowrap;
+    margin-left: auto;
+}
+.task-editor-input-area {
+    border-bottom: 1px solid #e6e6e6;
+    padding: 16px;
+}
+.task-editor-input-fields {
+    margin-bottom: 10px;
+}
+.task-editor-content .task-input {
+    border: none; /* Remove the border */
+    outline: none; /* Remove the outline that appears on focus */
+    background: none; /* Remove background color */
+    width: 100%; /* Optionally make it take full width */
+    font-size: 28px; /* Adjust the font size as needed */
+    padding: 5px 0; /* Add padding if needed */
+    font-weight: 600;
+    line-height: 25px;
+    word-break: break-word;
+    word-wrap: break-word;
+    color: #202020;
+    cursor: text;
+    height: 50px;
+  }
+  
+  .task-editor-content .task-input::placeholder {
+    color: #aaa; /* Placeholder text color */
+  }
+  
+
+  .descr-input {
+    border: none;
+    outline: none;
+    background: none;
+    width: 100%;
+    color: #202020;
+    line-height: 1.25;
+    font-size: 18px;
+    word-wrap: break-word;
+    cursor: text;
+    height: 30px;
+  }
+
+  /* date and priority css*/
+  .task-editor-date-priority{
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .task-editor-date-priority .optional-field  {
+    padding: 0px 6px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #e6e6e6;
+    border-radius: 5px;
+    height: 40px;
+    padding-inline: 6px;
+    cursor: pointer;
+    color: #202020;
+  }
+
+  .task-editor-actions-buttons {
+    padding: 0 16px;
+    margin: 16px 0;
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .task-editor-actions-buttons button {
+    padding: 0px 12px;
+    transition-duration: 0.3s;
+    transition-property: box-shadow, border;
+    transition-timing-function: ease;
+    min-width: 68px;
+    display: flex;
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    justify-content: center;
+    max-width: 100%;
+    user-select: none;
+    white-space: nowrap;
+    height: 46px;
+  }
+  .cancel-button {
+    background-color: #f5f5f5;
+    color: #444
+  }
+  .add-task-button {
+    background-color: #eda59e;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  .add-task-button.filled {
+    background-color: #dc4c3e;
+    color: #fff;
+}

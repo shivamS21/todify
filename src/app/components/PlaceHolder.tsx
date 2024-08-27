@@ -22,7 +22,6 @@ const PlaceHolder = () => {
                     <ViewSidebarOutlinedIcon/>
                 </button>
             </div>
-            
         </div>
     </div>
   )

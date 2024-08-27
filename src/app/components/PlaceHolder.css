@@ -1,13 +1,14 @@
 
 .placeHolder {
     height: 58px;
-    border-bottom: 1px solid black;
 }
 .placeHolder-content {
     display: flex;
     align-items: center;
     margin: 12px;
-    gap: 60px;
+    padding-bottom: 5px;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
 }
 .user {
     display: flex;
@@ -33,6 +34,7 @@
     width: 74px;
     justify-content: space-between;
     align-items: center;
+    margin-right: 10px;
 }
 
 .notif-sidebar button {
