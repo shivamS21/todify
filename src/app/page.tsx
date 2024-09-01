@@ -8,21 +8,8 @@ export default function Home() {
   const router = useRouter();
 
   const showSession = () => {
-    if (status === "authenticated") {
-      return (
-        <button
-          className="border border-solid border-black rounded"
-          onClick={() => {
-            signOut({ redirect: false }).then(() => {
-              router.push("/");
-            });
-
-          }}
-        >
-          Sign Out
-        </button>
-      )
-    } else if (status === "loading") {
+    console.log(status);
+    if (status === "loading") {
       return (
         <span className="text-[#888] text-sm mt-7">Loading...</span>
       )

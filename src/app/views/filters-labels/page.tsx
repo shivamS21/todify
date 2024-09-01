@@ -1,9 +1,9 @@
 import React from 'react'
 
-const FiltersAndLabels = () => {
+const page = () => {
   return (
-    <div>FiltersAndLabels</div>
+    <div>page</div>
   )
 }
 
-export default FiltersAndLabels
+export default page

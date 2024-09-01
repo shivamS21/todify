@@ -9,7 +9,7 @@ export interface TaskDocument {
   dueDate: Date;
   heading: string;
   description: string;
-  comment: string;
+  comment?: string;
   priority: 'low' | 'medium' | 'high';  // Priority can be one of these values
   createdAt: Date;
   updatedAt: Date;

@@ -1,4 +1,3 @@
-// Actions.tsx
 'use client';
 
 import React, { useState } from 'react';
@@ -10,7 +9,7 @@ import TodayOutlinedIcon from '@mui/icons-material/TodayOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import './Actions.css';
-import AddTaskModal from './AddTaskModal';
+import AddTaskModal from './Modal/AddTaskModal';
 
 type ButtonName = 'add-task' | 'search' | 'inbox' | 'today' | 'upcoming' | 'filters-label';
 

@@ -8,8 +8,8 @@ export default function Login() {
     const [error, setError] = useState("");
     const router = useRouter();
     const searchParams = useSearchParams();
-    const redirectPath = searchParams.get("redirect") || "/views/today"; // Default to "/today"
-
+    const redirectPath = searchParams.get("redirect") || "/views/today"; // Default to "/views/today"
+    
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
@@ -18,9 +18,11 @@ export default function Login() {
           password: formData.get("password"),
           redirect: false,
         });
+        console.log('user login tried:', res);
 
         if (res?.error) {
           setError(res.error as string);
+          return router.push('/login');
         }
 
         if (res?.ok) {
