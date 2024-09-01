@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import Navbar from '../../components/Navbar';
+import Navbar from '../components/Navbar';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CircularProgress } from '@mui/material';
