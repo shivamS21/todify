@@ -15,7 +15,7 @@ const Navbar = ({ selectedButton, setSelectedButton }: { selectedButton: string,
         </div>
         
         <button
-          className="border border-solid border-black rounded-full bg-orange-400 mb-2 ml-1 w-[94%] h-10 "
+          className="border border-solid border-black rounded-full bg-orange-400 mb-2 ml-1 w-[94%] h-10 shadow-md"
           onClick={() => {
             signOut({ redirect: false }).then(() => {
               router.push("/");

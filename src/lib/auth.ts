@@ -2,6 +2,7 @@ import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import type { NextAuthOptions } from "next-auth";
 import credentials from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 
 export const authOptions: NextAuthOptions  = {
@@ -29,6 +30,12 @@ export const authOptions: NextAuthOptions  = {
             if (!passwordMatch) throw new Error("Wrong Password");
             return user;
         },
+      }),
+
+        // Add GoogleProvider for Google Authentication
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID!,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       }),
     ],
     session: {

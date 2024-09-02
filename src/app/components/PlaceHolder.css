@@ -16,6 +16,7 @@
     /* margin-left: 3px; */
     padding: 6px 6px 6px 0px;
     border-radius: 4px;
+    gap:4px;
 }
 .user:hover {
     background-color: #b1aeae;
@@ -28,6 +29,7 @@
     width: 72px;
     font-size: 18px;
     font-weight: bold;
+    text-align: left;
 }
 .notif-sidebar {
     display: flex;

@@ -1,52 +1,83 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { register } from "./register";
+import Image from "next/image";
+import { signIn, useSession } from "next-auth/react";
 
 
 export default function Register() {
   const [error, setError] = useState<string>();
   const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
+  const { data: session, status } = useSession(); // Use useSession hook
+  const redirectPath = "/views/today"; // Default to "/views/today"
+  
+  useEffect(() => {
+    // If the user is already authenticated, redirect them to the intended page
+    if (status === "authenticated") {
+      console.log(session);
+      router.push(redirectPath);
+    }
+}, [status, router]);
 
   const handleSubmit = async (formData: FormData) => {
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const name = formData.get("name");
+
+    // keep a check on email, password and name
+    // for now, I will provide a valid email, password and name: use Zord
+
     const r = await register({
-        email: formData.get("email"),
-        password: formData.get("password"),
-        name: formData.get("name")    
-        });
-        ref.current?.reset();
-        if(r?.error){
-            setError(r.error);
-            return;
-        } else {
-            return router.push("/login");
-        }
-    };  
+      email, password, name   
+    });
+
+    if(r?.error){
+        setError(r.error);
+    } else {
+        router.push("/login");
+    }
+
+    ref.current?.reset();
+  };  
     
+    if (status === "loading") {
+      // You can return a loading indicator while the session is loading
+      return <div>Loading...</div>;
+    }
     return(
-        <section className="w-full h-screen flex items-center justify-center">
+        <section className="relative flex flex-col justify-center  p-6 w-full max-w-[800px] h-screen gap-2 left-1/10">
+              <h1 className="mb-5 w-full text-2xl font-bold text-left">Sign up</h1>
+              <button
+                  onClick={() => signIn("google")}
+                  className="pl-4 pr-4 flex items-center gap-2 border-2 h-12 border-solid border-gray-400 cursor-pointer flex-row justify-center w-[400px]">
+                  <Image src="https://authjs.dev/img/providers/google.svg" alt="Google Logo" width={32} height={32} />
+                  <span className='text-lg font-bold'>Continue with Google</span>
+              </button>
               <form ref = {ref}
                 action={handleSubmit}
-                className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
-                border border-solid border-black bg-white rounded">
-                {error && <div className="">{error}</div>}
-                <h1 className="mb-5 w-full text-2xl font-bold">Register</h1>
+                className="flex flex-col justify-between items-center gap-2 border rounded w-[400px]">
         
-                <label className="w-full text-sm">Full Name</label>
+                {error && (
+                  <div className="text-red-500 text-sm text-left mt-4 mb-4 w-full max-w-[400px]">
+                    {error}
+                  </div>
+                )}
+                <label className="w-full text-sm">Name</label>
                 <input
-                  type="text"
+                  type="name"
                   placeholder="Full Name"
-                  className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded text-[13px]"
+                  className="w-full h-11 border border-solid border-black p-2 rounded"
                   name="name"
                 />
-        
+
                 <label className="w-full text-sm">Email</label>
                 <input
                   type="email"
                   placeholder="Email"
-                  className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
+                  className="w-full h-11 border border-solid border-black p-2 rounded"
                   name="email"
                 />
         
@@ -55,14 +86,14 @@ export default function Register() {
                   <input
                     type="password"
                     placeholder="Password"
-                    className="w-full h-8 border border-solid border-black py-1 px-2.5 rounded"
+                    className="w-full h-11 border border-solid border-black p-2 rounded"
                     name="password"
                   />
                 </div>
         
-                <button className="w-full border border-solid border-black py-1.5 mt-2.5 rounded
-                transition duration-150 ease hover:bg-black">
-                  Sign up
+                <button className="w-full border border-solid border-black bg-orange-400 h-10 py-1.5 mt-2.5 rounded
+                transition duration-150 ease hover:bg-orange-300">
+                  Sign up with Email
                 </button>
         
                 

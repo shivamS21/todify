@@ -1,67 +1,98 @@
 "use client";
-import { FormEvent, useState } from "react";
-import { signIn } from "next-auth/react";
+import { FormEvent, useEffect, useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { checkUser } from "../utility/checkGoogleSignInNewUser";
 
 export default function Login() {
     const [error, setError] = useState("");
+    const { data: session, status } = useSession();
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const redirectPath = searchParams.get("redirect") || "/views/today"; // Default to "/views/today"
-    
+    const redirectPath = "/views/today"; // Default to "/views/today"
+
+    useEffect(() => {
+        // If the user is already authenticated, redirect them to the intended page
+        if (status === "authenticated") {
+          console.log(session);
+          checkUser(session).then(loginResult => {
+            if (loginResult?.success) {
+              router.push(redirectPath);
+            } else {
+                console.log(loginResult?.error);
+                router.push('/login');
+            }
+          });
+        }
+    }, [status, router]);
+
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const res = await signIn("credentials", {
-          email: formData.get("email"),
-          password: formData.get("password"),
-          redirect: false,
+            email: formData.get("email"),
+            password: formData.get("password"),
+            redirect: false,
         });
-        console.log('user login tried:', res);
 
         if (res?.error) {
-          setError(res.error as string);
-          return router.push('/login');
+            setError(res.error as string);
+            return;
         }
 
         if (res?.ok) {
-          return router.push(redirectPath);  // Redirect to the intended page
+            router.push(redirectPath); // Redirect to the intended page
         }
     };
 
+    if (status === "loading") {
+        // You can return a loading indicator while the session is loading
+        return <div>Loading...</div>;
+    }
+
     return (
-        <section className="w-full h-screen flex items-center justify-center">
-          <form
-            className="p-6 w-full max-w-[400px] flex flex-col justify-between items-center gap-2 
-            border border-solid border-black bg-white rounded"
-            onSubmit={handleSubmit}>
-            {error && <div className="text-black">{error}</div>}
-            <h1 className="mb-5 w-full text-2xl font-bold">Sign In</h1>
-            <label className="w-full text-sm">Email</label>
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full h-8 border border-solid border-black rounded p-2"
-              name="email" />
-            <label className="w-full text-sm">Password</label>
-            <div className="flex w-full">
-              <input
-                type="password"
-                placeholder="Password"
-                className="w-full h-8 border border-solid border-black rounded p-2"
-                name="password" />
-            </div>
-            <button className="w-full border border-solid border-black rounded">
-              Sign In
+        <section className="relative flex flex-col justify-center  p-6 w-full max-w-[800px] h-screen gap-2 left-1/10">
+            <h1 className="mb-5 w-full text-2xl font-bold text-left">Log In</h1>
+            <button
+                onClick={() => signIn("google")}
+                className="pl-4 pr-4 flex items-center gap-2 border-2 h-12 border-solid border-gray-400 cursor-pointer flex-row justify-center w-[400px]">
+                <Image src="https://authjs.dev/img/providers/google.svg" alt="Google Logo" width={32} height={32} />
+                <span className='text-lg font-bold'>Continue with Google</span>
             </button>
-    
-            <Link
-              href="/register"
-              className="text-sm text-[#888] transition duration-150 ease hover:text-black">
-              Don't have an account?
-            </Link>
-          </form>
+            <form
+                className="flex flex-col justify-between items-center gap-2 border rounded w-[400px]"
+                onSubmit={handleSubmit}>
+                {error && (
+                  <div className="text-red-500 text-sm text-left mt-4 mb-4 w-full max-w-[400px]">
+                    {error}
+                  </div>
+                )}
+                <label className="w-full text-sm">Email</label>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full h-11 border border-solid border-black rounded p-2"
+                    name="email" />
+                <label className="w-full text-sm">Password</label>
+                <div className="flex w-full">
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        className="w-full h-11 border border-solid border-black rounded p-2"
+                        name="password" />
+                </div>
+                <button className="w-full border border-solid border-black rounded bg-orange-500 py-1.5 mt-2.5 h-10
+                transition duration-150 ease hover:bg-orange-400">
+                    Log In
+                </button>
+
+                <Link
+                    href="/register"
+                    className="text-sm text-[#888] transition duration-150 ease hover:text-black">
+                    Don't have an account?
+                </Link>
+            </form>
         </section>
     );
 }

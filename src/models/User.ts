@@ -5,8 +5,7 @@ export interface UserDocument {
     email: string;
     password: string;
     name: string;
-    phone: string;
-    image: string;
+    image?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -15,7 +14,7 @@ const UserSchema = new Schema<UserDocument>({
     email: {
       type: String,
       unique: true,
-      required: [true, "Email is required"],
+      required: [true, "Please enter a valid email address"],
       match: [
         /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
         "Email is invalid",
@@ -23,11 +22,15 @@ const UserSchema = new Schema<UserDocument>({
     },
     password: {
       type: String,
-      required: true
+      required: [true, "Password is required"]
     },
     name: {
       type: String,
       required: [true, "Name is required"]
+    },
+    image: {
+      type: String,
+      required: false
     }
   },
   {
