@@ -22,39 +22,37 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
     const [priority, setPriority] = useState('priority-4');
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-    
-        const taskData = {
-        //   userId,
-          dueDate,
-          heading,
-          description,
-          comment,
-          priority,
-        };
-    
-        // try {
-        //   const response = await fetch('/api/tasks/create-task', {
-        //     method: 'POST',
-        //     headers: {
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(taskData),
-        //   });
-    
-        //   if (response.ok) {
-        //     const result = await response.json();
-        //     console.log('Task created:', result);
-        //     onClose(); // Close the modal after successful creation
-        //   } else {
-        //     console.error('Failed to create task');
-        //   }
-        // } catch (error) {
-        //   console.error('Error:', error);
+      e.preventDefault();
+  
+      const taskData = {
+        dueDate,
+        heading,
+        description,
+        comment,
+        priority,
+      };
+      console.log(JSON.stringify(taskData));
+      try {
+        const response = await fetch('/api/task', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(taskData),
+        });
+  
+        // if (response.ok) {
+        //   const result = await response.json();
+        //   console.log('Task created:', result);
+        //   onClose(); // Close the modal after successful creation
+        // } else {
+        //   console.error('Failed to create task');
         // }
-        console.log(taskData);
-        onClose();
-    };
+      } catch (error) {
+        console.error('Error:', error);
+      }
+  };
+  
     return (
       <div>
         <Modal

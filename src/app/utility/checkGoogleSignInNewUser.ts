@@ -6,7 +6,11 @@ export async function checkUser(session: any) {
 
 
     const r = await register({
-        email, password: generateRandomPassword(), name, image, auth_provider: 'google'
+        email, 
+        password: generateRandomPassword(), 
+        name, 
+        image, 
+        auth_provider: 'google'
       });
   
     if (r?.error){

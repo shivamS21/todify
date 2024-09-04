@@ -30,10 +30,12 @@ const TaskSchema = new Schema<TaskDocument>({
         required: [true, "Heading is required"]
     },
     description: {
-        type: String
+        type: String,
+        required: [true, 'Description is required']
     },
     comment: {
-        type: String
+        type: String,
+        required: false
     },
     priority: {
         type: String,

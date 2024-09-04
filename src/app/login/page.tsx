@@ -10,7 +10,7 @@ export default function Login() {
     const [error, setError] = useState("");
     const { data: session, status } = useSession();
     const router = useRouter();
-    const redirectPath = "/views/today"; // Default to "/views/today"
+    const redirectPath = "/views/today";
 
     useEffect(() => {
         // If the user is already authenticated, redirect them to the intended page
@@ -29,6 +29,7 @@ export default function Login() {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        // event.stopPropagation();
         const formData = new FormData(event.currentTarget);
         const res = await signIn("credentials", {
             email: formData.get("email"),

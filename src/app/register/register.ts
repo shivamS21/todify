@@ -10,10 +10,8 @@ export const register = async (value: any) => {
         await connectDB();
         const userFound = await User.findOne({ email });
         if(userFound){
-             if (!auth_provider)
-            return {
-                error: 'Email already exists!'
-            }
+            if (!auth_provider)
+            return { error: 'Email already exists!' }
             else
             return { success: true };
         }
