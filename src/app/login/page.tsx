@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { checkUser } from "../utility/checkGoogleSignInNewUser";
+import Loading from "../components/Loading";
 
 export default function Login() {
     const [error, setError] = useState("");
@@ -15,7 +16,6 @@ export default function Login() {
     useEffect(() => {
         // If the user is already authenticated, redirect them to the intended page
         if (status === "authenticated") {
-          console.log(session);
           checkUser(session).then(loginResult => {
             if (loginResult?.success) {
               router.push(redirectPath);
@@ -25,7 +25,7 @@ export default function Login() {
             }
           });
         }
-    }, [status, router]);
+    }, [session, status, router]);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -38,7 +38,7 @@ export default function Login() {
         });
 
         if (res?.error) {
-            setError(res.error as string);
+            setError(res.error as string); // need to return to the same /login address
             return;
         }
 
@@ -48,8 +48,7 @@ export default function Login() {
     };
 
     if (status === "loading") {
-        // You can return a loading indicator while the session is loading
-        return <div>Loading...</div>;
+        return <Loading/>
     }
 
     return (

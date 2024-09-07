@@ -10,7 +10,6 @@ export async function checkUser(session: any) {
         password: generateRandomPassword(), 
         name, 
         image, 
-        auth_provider: 'google'
       });
   
     if (r?.error){

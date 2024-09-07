@@ -5,12 +5,12 @@ import bcrypt from "bcryptjs";
 
 export const register = async (value: any) => {
     const { email, password, name, auth_provider, image } = value;
-    console.log(value);
+    console.log('register', value);
     try {
         await connectDB();
         const userFound = await User.findOne({ email });
         if(userFound){
-            if (!auth_provider)
+            if (auth_provider === 'local')
             return { error: 'Email already exists!' }
             else
             return { success: true };

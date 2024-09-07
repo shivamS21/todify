@@ -8,7 +8,7 @@ const PlaceHolder = () => {
     const session = useSession();
     const user = session?.data?.user;
 
-    const userImage = user?.image ?? '';
+    const userImage = user?.image ?? 'https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';
     const userName = user?.name?.split(' ')[0] ?? '';
     
   return (

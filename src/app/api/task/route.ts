@@ -2,37 +2,40 @@ import { NextResponse } from 'next/server';
 import Task from '@/models/Task';
 import { connectDB } from '@/lib/mongodb';
 import { getServerSession } from 'next-auth';
-import { useSession } from 'next-auth/react';
-import { authOptions } from "@/lib/auth";
-
+import { authOptions } from '@/lib/auth';
 
 export async function POST(request: Request) {
   try {
-    // await connectDB();
+    // Connect to the database
+    await connectDB();
 
+    // Fetch the session
     const session = await getServerSession(authOptions);
 
-    console.log(session);
-    if (!session) {
+    if (!session || !session.user) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    // const { heading, description, dueDate, comment, priority } = await request.json();
-    // console.log('shivam', { heading, description, dueDate, comment, priority });
-    // const userId = session.user.id;
+    // Parse the request body
+    const { heading, description, dueDate, comment, priority } = await request.json();
 
-    // const newTask = new Task({
-    //   userId,
-    //   heading,
-    //   description,
-    //   dueDate: new Date(dueDate),
-    //   comment,
-    //   priority,
-    // });
+    // Use the user's ID from the session
+    const userId = session.user.id;
 
-    // const savedTask = await newTask.save();
+    // Create a new task
+    const newTask = new Task({
+      userId,
+      heading,
+      description,
+      dueDate: new Date(dueDate),
+      comment,
+      priority,
+    });
 
-    return NextResponse.json({ message: 'Task created successfully', task: 'savedTask' }, { status: 201 });
+    // Save the task in the database
+    const savedTask = await newTask.save();
+
+    return NextResponse.json({ message: 'Task created successfully', task: savedTask }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

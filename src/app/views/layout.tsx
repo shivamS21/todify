@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { CircularProgress } from '@mui/material';
+import Loading from '../components/Loading';
 
 export default function RootLayout({
   children,
@@ -38,9 +39,8 @@ export default function RootLayout({
     }
   }, [pathName]);
 
-  // Show loading spinner while session status is loading
   if (status === 'loading') {
-    return <div className='flex justify-center items-center w-screen h-screen'><CircularProgress /></div>;
+    return <Loading/>
   }
 
   // Render nothing if the user is unauthenticated (to prevent flashing of protected content)

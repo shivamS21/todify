@@ -5,6 +5,7 @@ import Link from "next/link";
 import { register } from "./register";
 import Image from "next/image";
 import { signIn, useSession } from "next-auth/react";
+import Loading from "../components/Loading";
 
 
 export default function Register() {
@@ -17,7 +18,7 @@ export default function Register() {
   useEffect(() => {
     // If the user is already authenticated, redirect them to the intended page
     if (status === "authenticated") {
-      console.log(session);
+      console.log('Alreadt authenticated', session);
       router.push(redirectPath);
     }
 }, [status, router]);
@@ -31,7 +32,7 @@ export default function Register() {
     // for now, I will provide a valid email, password and name: use Zord
 
     const r = await register({
-      email, password, name   
+      email, password, name, auth_provider: 'local', image: ''   
     });
 
     if(r?.error){
@@ -44,8 +45,7 @@ export default function Register() {
   };  
     
     if (status === "loading") {
-      // You can return a loading indicator while the session is loading
-      return <div>Loading...</div>;
+      return <Loading/>
     }
     return(
         <section className="relative flex flex-col justify-center  p-6 w-full max-w-[800px] h-screen gap-2 left-1/10">
