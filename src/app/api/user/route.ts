@@ -1,5 +1,7 @@
 import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 export async function POST (request: Request) {
     const {name, email} = await request.json();
@@ -17,6 +19,22 @@ export async function POST (request: Request) {
     });
 }
 
-export async function GET () {
-    return new Response("I am Shivam");
+export async function GET() {
+    try {
+        // Fetch the session on the server side
+        const session = await getServerSession(authOptions);
+        
+        console.log('Session:', session);
+
+        if (!session || !session.accessToken) {
+            return new Response('Unauthorized', { status: 401 });
+        }
+
+        // Return the access token if the session is valid
+        return new Response(session.accessToken, { status: 200 });
+
+    } catch (error) {
+        console.error('Error fetching session:', error);
+        return new Response('Internal Server Error', { status: 500 });
+    }
 }

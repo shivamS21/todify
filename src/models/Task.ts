@@ -10,7 +10,7 @@ export interface TaskDocument {
   heading: string;
   description: string;
   comment?: string;
-  priority: 'low' | 'medium' | 'high';  // Priority can be one of these values
+  priority: 'Priority-1' | 'Priority-2' | 'Priority-3' | 'Priority-4';  // Priority can be one of these values
   createdAt: Date;
   updatedAt: Date;
 }
@@ -39,8 +39,7 @@ const TaskSchema = new Schema<TaskDocument>({
     },
     priority: {
         type: String,
-        enum: ['low', 'medium', 'high'],
-        default: 'medium',
+        enum: ['Priority-1', 'Priority-2', 'Priority-3', 'Priority-4'],
         required: true
     }
     }, {

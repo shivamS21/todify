@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import './AddTaskModal.css';
 import { SetStateAction, useState } from 'react';
+import { getSession } from 'next-auth/react';
 const style = {
     position: 'absolute' as 'absolute',
     top: '20%',
@@ -19,10 +20,12 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState('');
     const [comment, setComment] = useState('');
-    const [priority, setPriority] = useState('priority-4');
+    const [priority, setPriority] = useState('Priority-4');
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
+
+      const session = await getSession();
   
       const taskData = {
         dueDate,
@@ -31,23 +34,26 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
         comment,
         priority,
       };
-      console.log(JSON.stringify(taskData));
+      console.log('taskDta', taskData);
+
       try {
         const response = await fetch('/api/task', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.accessToken}`,
           },
           body: JSON.stringify(taskData),
         });
+        console.log('response', response);
   
-        // if (response.ok) {
-        //   const result = await response.json();
-        //   console.log('Task created:', result);
-        //   onClose(); // Close the modal after successful creation
-        // } else {
-        //   console.error('Failed to create task');
-        // }
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Task created:', result);
+          onClose(); // Close the modal after successful creation
+        } else {
+          throw new Error("Request failed");
+        }
       } catch (error) {
         console.error('Error:', error);
       }
@@ -91,10 +97,10 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
                                 <div className="task-editor-priority">
                                 <select className="priority-select optional-field" value={priority} onChange={(e) => setPriority(e.target.value)}>
                                     <option value="" disabled hidden>Select Priority</option>
-                                    <option value="priority-1">Priority 1</option>
-                                    <option value="priority-2">Priority 2</option>
-                                    <option value="priority-3">Priority 3</option>
-                                    <option value="priority-4">Priority 4</option>
+                                    <option value="Priority-1">Priority 1</option>
+                                    <option value="Priority-2">Priority 2</option>
+                                    <option value="Priority-3">Priority 3</option>
+                                    <option value="Priority-4">Priority 4</option>
                                     </select>
 
                                 </div>
