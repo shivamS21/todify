@@ -1,7 +1,4 @@
 import mongoose, { Schema, model } from "mongoose";
-// mongoose imports main library object of mongoose
-// Schema, model imports specific functionalities of mongoose library
-// models/task.ts
 
 export interface TaskDocument {
   _id: string;
@@ -10,7 +7,7 @@ export interface TaskDocument {
   heading: string;
   description: string;
   comment?: string;
-  priority: 'Priority-1' | 'Priority-2' | 'Priority-3' | 'Priority-4';  // Priority can be one of these values
+  priority: 'Priority-1' | 'Priority-2' | 'Priority-3' | 'Priority-4';
   createdAt: Date;
   updatedAt: Date;
 }

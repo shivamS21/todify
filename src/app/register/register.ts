@@ -5,7 +5,6 @@ import bcrypt from "bcryptjs";
 
 export const register = async (value: any) => {
     const { email, password, name, auth_provider, image } = value;
-    console.log('register', value);
     try {
         await connectDB();
         const userFound = await User.findOne({ email });

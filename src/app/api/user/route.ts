@@ -24,8 +24,6 @@ export async function GET() {
         // Fetch the session on the server side
         const session = await getServerSession(authOptions);
         
-        console.log('Session:', session);
-
         if (!session || !session.accessToken) {
             return new Response('Unauthorized', { status: 401 });
         }

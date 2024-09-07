@@ -14,7 +14,6 @@ export async function POST(req: Request) {
   }
 
   const token = authHeader.split(" ")[1];
-  console.log('token', token);
 
   try {
     // Verify JWT token
@@ -23,7 +22,7 @@ export async function POST(req: Request) {
 
     // Fetch the session using NextAuth
     const session = await getServerSession(authOptions);
-    console.log('session', session);
+    console.log('my token', session?.accessToken);
 
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -53,8 +52,34 @@ export async function POST(req: Request) {
     // Return a success response with the saved task
     return NextResponse.json({ message: 'Task created successfully', task: savedTask }, { status: 201 });
 
-  } catch (error) {
-    console.error('Error in POST request:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  } catch (e) {
+    console.error('Error in POST request:', e);
+    return NextResponse.json({ error: e }, { status: 500 });
   }
+}
+
+export async function GET (req: Request) {
+  const authHeader = req.headers.get('authorization');
+  console.log('harshit sharma');
+
+  if (!authHeader || !authHeader.startsWith('Bearer')) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
+
+  const token = authHeader.split(" ")[1];
+  console.log('shivam sharma');  
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    const session = await getServerSession(authOptions);
+    const userTasks = await Task.find({userId: session?.user.id});
+    console.log('userTasks', userTasks);
+    return NextResponse.json({ userTasks }, {status: 200} )
+
+  } catch (e) {
+    console.error('Error in task GET request', e);
+    return NextResponse.json({error: e}, {status: 500});
+  }
+
+
 }

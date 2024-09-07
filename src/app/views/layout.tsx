@@ -52,7 +52,7 @@ export default function RootLayout({
   return (
     <div className="main">
       <Navbar selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
-      <main>
+      <main className='w-screen'>
         {children}
       </main>
     </div>

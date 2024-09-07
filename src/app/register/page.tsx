@@ -18,7 +18,6 @@ export default function Register() {
   useEffect(() => {
     // If the user is already authenticated, redirect them to the intended page
     if (status === "authenticated") {
-      console.log('Alreadt authenticated', session);
       router.push(redirectPath);
     }
 }, [status, router]);

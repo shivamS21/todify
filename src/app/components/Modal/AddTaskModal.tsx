@@ -4,8 +4,9 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import './AddTaskModal.css';
-import { SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { getSession } from 'next-auth/react';
+import PriorityDropdown from './PriorityDropdown';
 const style = {
     position: 'absolute' as 'absolute',
     top: '20%',
@@ -19,7 +20,6 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
     const [heading, setHeading] = useState('');
     const [description, setDescription] = useState('');
     const [dueDate, setDueDate] = useState('');
-    const [comment, setComment] = useState('');
     const [priority, setPriority] = useState('Priority-4');
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -31,7 +31,6 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
         dueDate,
         heading,
         description,
-        comment,
         priority,
       };
       console.log('taskDta', taskData);
@@ -94,16 +93,7 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
                                     <input type="date" placeholder="Due date" className="date-input optional-field" value={dueDate}
                                 onChange={(e) => setDueDate(e.target.value)}/>
                                 </div>
-                                <div className="task-editor-priority">
-                                <select className="priority-select optional-field" value={priority} onChange={(e) => setPriority(e.target.value)}>
-                                    <option value="" disabled hidden>Select Priority</option>
-                                    <option value="Priority-1">Priority 1</option>
-                                    <option value="Priority-2">Priority 2</option>
-                                    <option value="Priority-3">Priority 3</option>
-                                    <option value="Priority-4">Priority 4</option>
-                                    </select>
-
-                                </div>
+                                <PriorityDropdown priority={priority} setPriority={setPriority}/>
                             </div>
                         </div>
                         <div className="task-editor-actions-buttons">
