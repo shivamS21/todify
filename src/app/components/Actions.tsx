@@ -21,16 +21,16 @@ const Actions = ({ selectedButton, setSelectedButton }: { selectedButton: string
     setSelectedButton(buttonName);
     switch (buttonName) {
       case 'inbox':
-        router.push('/views/inbox');  // Navigate to Inbox page
+        router.push('/views/inbox');
         break;
       case 'today':
-        router.push('/views/today');  // Navigate to Today page
+        router.push('/views/today');
         break;
       case 'upcoming':
-        router.push('/views/upcoming');  // Navigate to Upcoming page
+        router.push('/views/upcoming');
         break;
       case 'filters-label':
-        router.push('/views/filters-labels');  // Navigate to Filters & Labels page
+        router.push('/views/filters-labels');
         break;
       default:
         break;
@@ -38,11 +38,11 @@ const Actions = ({ selectedButton, setSelectedButton }: { selectedButton: string
   };
 
   const handleAddTaskClick = () => {
-    setIsModalOpen(true); // Open the modal when "Add Task" button is clicked
+    setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);  // Close the modal
+    setIsModalOpen(false);
   };
 
   return (

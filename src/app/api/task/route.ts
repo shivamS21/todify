@@ -60,14 +60,12 @@ export async function POST(req: Request) {
 
 export async function GET (req: Request) {
   const authHeader = req.headers.get('authorization');
-  console.log('harshit sharma');
 
   if (!authHeader || !authHeader.startsWith('Bearer')) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
 
   const token = authHeader.split(" ")[1];
-  console.log('shivam sharma');  
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);

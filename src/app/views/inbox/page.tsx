@@ -1,6 +1,6 @@
 'use client';
 
-// type issues in this file. Still to debug
+import TaskCard from '@/app/components/Cards/TaskCard';
 
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
@@ -20,7 +20,7 @@ const Inbox = () => {
   const {data: session, status } = useSession();
 
   type TaskList = {
-    [key: string]: string[]; // or you can use a more specific type if needed
+    [key: string]: Task[]; // or you can use a more specific type if needed
   };
   // State to store the fetched tasks
   const [taskList, setTaskList] = useState<TaskList>({});
@@ -28,7 +28,7 @@ const Inbox = () => {
 
   
   
-  const createTaskListPriorityWise = (tasks: []) => {
+  const createTaskListPriorityWise = (tasks: Task[]) => {
     
     const updatedTaskList: TaskList = {};
 
@@ -66,9 +66,7 @@ const Inbox = () => {
       }
 
       const data = await response.json();
-      console.log(data.userTasks);
       createTaskListPriorityWise(data.userTasks);
-      console.log(taskList);
     } catch (error) {
       console.error('Error fetching tasks:', error);
     }
@@ -80,16 +78,22 @@ const Inbox = () => {
 
   return (
     <div>
-      <b className="my-1.5 mx-14 text-[32px]">Inbox</b>
-       {/* {updatedTaskList.length > 0 ? (
-        <ul>
-          {updatedTaskList.map((task: any) => (
-            <li key={task._id}>{task.heading}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>No tasks found</p>
-      )} */}
+      <b className="text-[26px] flex pb-1">Inbox</b>
+      
+      {
+        Object.keys(taskList).map(priority => (
+          <div key={priority} className='flex flex-col mb-2'>
+            {taskList[priority].length > 0 && (
+              <b className='flex text-[16px] pb-1 pt-3 border-b border-b-zinc-100'>{priority}</b>
+            )}
+            <ul>
+              {taskList[priority].map(task => (
+                <TaskCard task={task}/>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </div>
   );
 };

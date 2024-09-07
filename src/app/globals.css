@@ -36,4 +36,5 @@ body {
 .main {
   display: flex;
   min-height: 100vh;
+  background-color: white;
 }

@@ -4,7 +4,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import Navbar from '../components/Navbar';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { CircularProgress } from '@mui/material';
 import Loading from '../components/Loading';
 
 export default function RootLayout({
@@ -45,14 +44,14 @@ export default function RootLayout({
 
   // Render nothing if the user is unauthenticated (to prevent flashing of protected content)
   if (status === 'unauthenticated') {
-    return null;
+    return null; // push login page here
   }
 
   // Only render content if the user is authenticated
   return (
     <div className="main">
       <Navbar selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
-      <main className='w-screen'>
+      <main className='w-screen my-1.5 px-[150px] h-[calc(100vh-3rem)] overflow-y-auto'>
         {children}
       </main>
     </div>
