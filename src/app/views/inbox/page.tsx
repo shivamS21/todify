@@ -38,7 +38,6 @@ const Inbox = () => {
     });
 
     // Distribute tasks based on their priority
-    console.log(tasks)
     tasks.forEach((task: Task) => {
       const priority = task.priority;
       if (updatedTaskList[priority]) {
@@ -46,8 +45,7 @@ const Inbox = () => {
       }
     });
     setTaskList(updatedTaskList);
-    console.log('chacha', updatedTaskList)
-    console.log('papa', taskList)
+    // console.log('task list', tasks);
 
   }
 

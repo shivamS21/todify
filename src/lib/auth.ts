@@ -46,6 +46,7 @@ export const authOptions: NextAuthOptions = {
         );
 
         if (!passwordMatch) throw new Error("Wrong Password");
+        // task: provide a way to set the password here
 
         // Generate a JWT manually for the user
         const token = jwt.sign(
@@ -75,6 +76,8 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async jwt({ token, account, user }) {
+      // Google uses its own secret to sign the token.
+      // verifying a signature is often faster than checking an access token against a database
       // Persist the access token and user ID in the JWT
       if (account) {
         token.accessToken = account.access_token as string;
@@ -88,12 +91,19 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       // Add the accessToken and user ID to the session object
+
+      // extract user from database
+      const existingUser = await User.findOne({ email: session.user.email });
+      if (existingUser) {
+        session.user.id = existingUser._id.toString();
+        session.user.name = existingUser.name.toString();
+      }
       // Type-check to ensure accessToken is a string or undefined
       if (typeof token.accessToken === 'string') {
         session.accessToken = token.accessToken;
       }
-      
-      session.user.id = token.id as string;
+
+      console.log('session', session);
       return session;
     },
   },

@@ -3,26 +3,12 @@ import Task from '@/models/Task';
 import { connectDB } from '@/lib/mongodb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import jwt from 'jsonwebtoken';
 
 // POST request handler
 export async function POST(req: Request) {
-  const authHeader = req.headers.get('authorization');
-
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  const token = authHeader.split(" ")[1];
-
   try {
-    // Verify JWT token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    console.log('User is authenticated', decoded);
 
-    // Fetch the session using NextAuth
     const session = await getServerSession(authOptions);
-    console.log('my token', session?.accessToken);
 
     if (!session || !session.user) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -44,12 +30,9 @@ export async function POST(req: Request) {
       priority,
     });
 
-    // Connect to the database
     await connectDB();
-    // Save the task in the database
     const savedTask = await newTask.save();
 
-    // Return a success response with the saved task
     return NextResponse.json({ message: 'Task created successfully', task: savedTask }, { status: 201 });
 
   } catch (e) {
@@ -58,26 +41,34 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET (req: Request) {
-  const authHeader = req.headers.get('authorization');
-
-  if (!authHeader || !authHeader.startsWith('Bearer')) {
-    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-  }
-
-  const token = authHeader.split(" ")[1];
-
+// GET request handler
+export async function GET(req: Request) {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
     const session = await getServerSession(authOptions);
-    const userTasks = await Task.find({userId: session?.user.id});
-    console.log('userTasks', userTasks);
-    return NextResponse.json({ userTasks }, {status: 200} )
+    const userTasks = await Task.find({ userId: session?.user.id }); // Array of tasks
+    return NextResponse.json({ userTasks }, { status: 200 });
 
   } catch (e) {
     console.error('Error in task GET request', e);
-    return NextResponse.json({error: e}, {status: 500});
+    return NextResponse.json({ error: e }, { status: 500 });
   }
+}
 
+// DELETE request handler
+export async function DELETE(req: Request) {
+  try {
+    const { taskId } = await req.json(); // Expect taskId in the body
+    console.log(taskId, "taskId2");
+    
+    const deletedTask = await Task.findByIdAndDelete(taskId);
 
+    if (!deletedTask) {
+      return NextResponse.json({ message: "Task not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: "Task deleted successfully!" }, { status: 200 });
+  } catch (e) {
+    console.error('Error in task DELETE request', e);
+    return NextResponse.json({ error: e }, { status: 500 });
+  }
 }

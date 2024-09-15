@@ -57,7 +57,7 @@ export default function Register() {
               </button>
               <form ref = {ref}
                 action={handleSubmit}
-                className="flex flex-col justify-between items-center gap-2 border rounded w-[400px]">
+                className="flex flex-col justify-between items-center gap-2 rounded w-[400px]">
         
                 {error && (
                   <div className="text-red-500 text-sm text-left mt-4 mb-4 w-full max-w-[400px]">
@@ -96,9 +96,15 @@ export default function Register() {
                 </button>
         
                 
-                <Link href="/login" className="text-sm text-[#888] transition duration-150 ease hover:text-black">
-                  Already have an account?
-                  </Link>
+                <div className="flex w-[100%] text-sm text-[#888] justify-center border-t border-gray-300 mt-1 pt-3">
+                    <span>Already signed up?  
+                    <Link
+                        href="/login"
+                        className="text-[#888] transition duration-150 ease hover:text-black ml-1">
+                        <u>Go to login</u>
+                    </Link>
+                    </span>
+                </div>
               </form>
         </section>
     )

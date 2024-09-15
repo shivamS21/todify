@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import './AddTaskModal.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getSession } from 'next-auth/react';
 import PriorityDropdown from './PriorityDropdown';
 const style = {
@@ -19,8 +19,10 @@ const style = {
 export default function AddTaskModal({ onClose }: { onClose: () => void }) {
     const [heading, setHeading] = useState('');
     const [description, setDescription] = useState('');
-    const [dueDate, setDueDate] = useState('');
     const [priority, setPriority] = useState('Priority-4');
+    
+    const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
+    const [dueDate, setDueDate] = useState(today);
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
@@ -33,7 +35,6 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
         description,
         priority,
       };
-      console.log('taskDta', taskData);
 
       try {
         const response = await fetch('/api/task', {
@@ -44,7 +45,6 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
           },
           body: JSON.stringify(taskData),
         });
-        console.log('response', response);
   
         if (response.ok) {
           const result = await response.json();
@@ -80,18 +80,34 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
                         <div className="task-editor-input-area">
                             <div className="task-editor-input-fields">
                                 <div className="task-editor-content">
-                                    <input type="text" placeholder="Task name" className="task-input" value={heading}
-                                onChange={(e) => setHeading(e.target.value)}/>
+                                    <input 
+                                      type="text" 
+                                      placeholder="Task name" 
+                                      className="task-input" 
+                                      value={heading}
+                                      onChange={(e) => setHeading(e.target.value)}
+                                    />
                                 </div>
                                 <div className="task-editor-description">
-                                    <input type="text" placeholder="Description" className="descr-input" value={description}
-                                onChange={(e) => setDescription(e.target.value)}/>
+                                    <input 
+                                      type="text" 
+                                      placeholder="Description" 
+                                      className="descr-input" 
+                                      value={description}
+                                      onChange={(e) => setDescription(e.target.value)}
+                                    />
                                 </div>
                             </div>
                             <div className="task-editor-date-priority">
                                 <div className="task-editor-due-date">
-                                    <input type="date" placeholder="Due date" className="date-input optional-field" value={dueDate}
-                                onChange={(e) => setDueDate(e.target.value)}/>
+                                <input 
+                                  type="date" 
+                                  placeholder="Due date" 
+                                  className="date-input optional-field" 
+                                  value={dueDate}
+                                  min={new Date().toISOString().split('T')[0]} // Prevent selection of dates before today
+                                  onChange={(e) => setDueDate(e.target.value)} 
+                                />
                                 </div>
                                 <PriorityDropdown priority={priority} setPriority={setPriority}/>
                             </div>
