@@ -5,7 +5,6 @@ import { authOptions } from "@/lib/auth";
 
 export async function POST (request: Request) {
     const {name, email} = await request.json();
-    console.log(name, email);
 
     await connectDB();
 

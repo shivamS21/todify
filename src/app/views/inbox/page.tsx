@@ -46,7 +46,6 @@ const Inbox = () => {
       }
     });
     setTaskList(updatedTaskList);
-    console.log(taskList)
   }
 
   // Function to fetch user tasks
@@ -86,7 +85,7 @@ const Inbox = () => {
             )}
             <ul>
               {taskList[priority].map(task => (
-                <TaskCard task={task}/>
+                <TaskCard key={task._id} task={task} />
               ))}
             </ul>
           </div>

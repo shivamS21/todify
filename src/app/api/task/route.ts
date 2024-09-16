@@ -58,7 +58,7 @@ export async function GET(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const { taskId } = await req.json(); // Expect taskId in the body
-    console.log(taskId, "taskId2");
+    // console.log(taskId, "taskId2");
     
     const deletedTask = await Task.findByIdAndDelete(taskId);
 
