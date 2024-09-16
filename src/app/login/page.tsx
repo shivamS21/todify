@@ -80,7 +80,9 @@ export default function Login() {
                         type="password"
                         placeholder="Password"
                         className="w-full h-11 border border-solid border-black rounded p-2"
-                        name="password" />
+                        name="password" 
+                        autoComplete="current-password"
+                    />
                 </div>
                 <button className="w-full border border-solid border-black rounded bg-orange-500 py-1.5 mt-2.5 h-10
                 transition duration-150 ease hover:bg-orange-400">

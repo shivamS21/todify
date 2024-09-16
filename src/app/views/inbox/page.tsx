@@ -71,7 +71,7 @@ const Inbox = () => {
 
   useEffect(()=>{
     fetchUserTasks();
-  }, [])
+  }, [fetchUserTasks])
 
   return (
     <div>
