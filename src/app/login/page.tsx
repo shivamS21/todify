@@ -87,7 +87,7 @@ export default function Login() {
                     Log In
                 </button>
                 <div className="flex w-[100%] text-sm text-[#888] justify-center border-t border-gray-300 mt-1 pt-3">
-                    <span>Don't have an account?
+                    <span>Don&apos;t have an account?
                     <Link
                         href="/register"
                         className="text-[#888] transition duration-150 ease hover:text-black ml-1">
