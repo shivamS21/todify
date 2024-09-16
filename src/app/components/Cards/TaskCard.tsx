@@ -17,9 +17,10 @@ type Task = {
 
 type TaskCardProps = {
   task: Task;
+  onDelete: (taskId: string) => void;
 };
 
-export default function TaskCard({ task }: TaskCardProps) {
+export default function TaskCard({ task, onDelete }: TaskCardProps) {
   const { data: session } = useSession();
   const [isHovered, setIsHovered] = useState(false);
 
@@ -37,7 +38,7 @@ export default function TaskCard({ task }: TaskCardProps) {
       return;
     } 
 
-    await fetch('/api/task', {
+    const response = await fetch('/api/task', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -45,11 +46,17 @@ export default function TaskCard({ task }: TaskCardProps) {
       },
       body: JSON.stringify({taskId: task._id}),
     });
+
+    if (response.ok) {
+      onDelete(task._id); // Call onDelete to update the task list in Inbox
+    } else {
+      console.error('Failed to delete task');
+    }
   };
 
   return (
     <div
-      className="relative flex p-2 border-b border-b-zinc-100 cursor-pointer"
+      className="relative flex p-2 justify-stretch border-b border-b-zinc-100 cursor-pointer pl-0"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -79,7 +86,6 @@ export default function TaskCard({ task }: TaskCardProps) {
         </div>
       </div>
 
-      {/* Show the CustomizeTask component on hover */}
       {isHovered && (
         <div className="absolute top-0 right-0 pt-2">
           <CustomizeTask />

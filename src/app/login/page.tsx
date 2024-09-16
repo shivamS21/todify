@@ -20,7 +20,6 @@ export default function Login() {
             if (loginResult?.success) {
               router.push(redirectPath);
             } else {
-                // console.log(loginResult?.error);
                 router.push('/login');
             }
           });
@@ -29,7 +28,6 @@ export default function Login() {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        // event.stopPropagation();
         const formData = new FormData(event.currentTarget);
         const res = await signIn("credentials", {
             email: formData.get("email"),
@@ -73,7 +71,9 @@ export default function Login() {
                     type="email"
                     placeholder="Email"
                     className="w-full h-11 border border-solid border-black rounded p-2"
-                    name="email" />
+                    name="email" 
+                    autoComplete="username"
+                />
                 <label className="w-full text-sm">Password</label>
                 <div className="flex w-full">
                     <input
@@ -97,7 +97,6 @@ export default function Login() {
                     </Link>
                     </span>
                 </div>
-                
             </form>
         </section>
     );

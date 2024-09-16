@@ -48,7 +48,6 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
   
         if (response.ok) {
           const result = await response.json();
-          // console.log('Task created:', result);
           onClose(); // Close the modal after successful creation
         } else {
           throw new Error("Request failed");

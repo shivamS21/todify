@@ -14,8 +14,8 @@ import AddTaskModal from './Modal/AddTaskModal';
 type ButtonName = 'add-task' | 'search' | 'inbox' | 'today' | 'upcoming' | 'filters-label';
 
 const Actions = ({ selectedButton, setSelectedButton }: { selectedButton: string, setSelectedButton: React.Dispatch<React.SetStateAction<string>> }) => {
-  const router = useRouter(); // Initialize useRouter
-  const [isModalOpen, setIsModalOpen] = useState(false); // Initialize as false
+  const router = useRouter(); 
+  const [isModalOpen, setIsModalOpen] = useState(false); 
 
   const handleButtonClick = (buttonName: ButtonName) => {
     setSelectedButton(buttonName);

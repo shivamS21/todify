@@ -1,7 +1,7 @@
 'use client';
 
+import AddTask from '@/app/components/Cards/AddTask';
 import TaskCard from '@/app/components/Cards/TaskCard';
-import Loading from '@/app/components/Loading';
 
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
@@ -27,8 +27,6 @@ const Inbox = () => {
   const [taskList, setTaskList] = useState<TaskList>({});
   const priorities: string[] = ['Priority-1', 'Priority-2', 'Priority-3', 'Priority-4'];
 
-  
-  
   const createTaskListPriorityWise = (tasks: Task[]) => {
     
     const updatedTaskList: TaskList = {};
@@ -69,9 +67,23 @@ const Inbox = () => {
     }
   };
 
+  // Function to handle task deletion
+  const handleDelete = (taskId: string) => {
+    setTaskList((prevTaskList) => {
+      const updatedTaskList: TaskList = {};
+
+      // Iterate over each priority and filter out the deleted task
+      Object.keys(prevTaskList).forEach((priority) => {
+        updatedTaskList[priority] = prevTaskList[priority].filter(task => task._id !== taskId);
+      });
+
+      return updatedTaskList;
+    });
+  };
+
   useEffect(()=>{
     fetchUserTasks();
-  }, [])
+  }, [session?.accessToken])
 
   return (
     <div>
@@ -79,21 +91,19 @@ const Inbox = () => {
       
       {
         Object.keys(taskList).map(priority => (
-          <div key={priority} className='flex flex-col mb-2'>
+          <div key={priority} className={`${taskList[priority].length > 0 ? 'flex flex-col mb-2': ''}`}>
             {taskList[priority].length > 0 && (
-              <b className='flex text-[16px] pb-1 pt-3 border-b border-b-zinc-100'>{priority}</b>
+              <><b className='flex text-[16px] pb-1 pt-3 border-b border-b-zinc-100'>{priority}</b><ul>
+                {taskList[priority].map(task => (
+                  <TaskCard key={task._id} task={task} onDelete={handleDelete} />
+                ))}
+              </ul></>
             )}
-            <ul>
-              {taskList[priority].map(task => (
-                <TaskCard key={task._id} task={task} />
-              ))}
-            </ul>
+            
           </div>
         ))
-      } 
-      {
-        // taskList.length>0 && <Loading/>
       }
+      <AddTask/>
     </div>
   );
 };
