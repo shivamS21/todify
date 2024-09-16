@@ -2,7 +2,10 @@ import React from 'react'
 
 const Today = () => {
   return (
-    <div>Today</div>
+    <div>
+      <b className="text-[26px] flex pb-1">Today</b>
+
+    </div>
   )
 }
 

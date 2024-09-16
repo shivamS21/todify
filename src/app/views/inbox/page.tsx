@@ -1,6 +1,7 @@
 'use client';
 
 import TaskCard from '@/app/components/Cards/TaskCard';
+import Loading from '@/app/components/Loading';
 
 import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
@@ -45,8 +46,7 @@ const Inbox = () => {
       }
     });
     setTaskList(updatedTaskList);
-    // console.log('task list', tasks);
-
+    console.log(taskList)
   }
 
   // Function to fetch user tasks
@@ -91,6 +91,9 @@ const Inbox = () => {
             </ul>
           </div>
         ))
+      } 
+      {
+        // taskList.length>0 && <Loading/>
       }
     </div>
   );

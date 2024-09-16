@@ -2,7 +2,9 @@ import React from 'react'
 
 const Upcoming = () => {
   return (
-    <div>Upcoming</div>
+    <div>
+      <b className="text-[26px] flex pb-1">Upcoming</b>
+    </div>
   )
 }
 
