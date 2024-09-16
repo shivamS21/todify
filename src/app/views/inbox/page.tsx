@@ -54,7 +54,7 @@ const Inbox = () => {
       const response = await fetch('/api/task', {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${session?.accessToken}`, // Adding JWT token in request header
+          'Authorization': `Bearer ${session?.accessToken}`,
         },
       });
 
@@ -71,7 +71,7 @@ const Inbox = () => {
 
   useEffect(()=>{
     fetchUserTasks();
-  }, [fetchUserTasks])
+  }, [])
 
   return (
     <div>
