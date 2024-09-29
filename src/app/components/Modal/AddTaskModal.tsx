@@ -15,21 +15,43 @@ const style = {
     bgcolor: 'background.paper',
   };
 
+  type Task = {
+    _id: string;
+    userId: string;
+    dueDate: string;
+    heading: string;
+    description: string;
+    comment: string;
+    priority: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+type taskModalProps = {
+  task?: Task;
+  onClose : () => void;
+  interactionButton?: string
+  onTaskAdded?: () => void
+
+}
+
   
-export default function AddTaskModal({ onClose }: { onClose: () => void }) {
-    const [heading, setHeading] = useState('');
-    const [description, setDescription] = useState('');
-    const [priority, setPriority] = useState('Priority-4');
+export default function AddTaskModal({ onClose , task, interactionButton, onTaskAdded }: taskModalProps) {
+    const taskId = task?._id;
+    const [heading, setHeading] = useState(task?.heading || '');
+    const [description, setDescription] = useState(task?.description || '');
+    const [priority, setPriority] = useState(task?.priority || 'Priority-4');
     
     const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
-    const [dueDate, setDueDate] = useState(today);
+    const [dueDate, setDueDate] = useState(task?.dueDate ? new Date(task?.dueDate).toISOString().split('T')[0] : today);
 
     const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
 
       const session = await getSession();
   
-      const taskData = {
+      const newTask = {
+        taskId,
         dueDate,
         heading,
         description,
@@ -38,17 +60,18 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
 
       try {
         const response = await fetch('/api/task', {
-          method: 'POST',
+          method: interactionButton==='Update'?'PUT':'POST',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session?.accessToken}`,
           },
-          body: JSON.stringify(taskData),
+          body: JSON.stringify(newTask),
         });
   
         if (response.ok) {
           const result = await response.json();
           onClose(); // Close the modal after successful creation
+          onTaskAdded?.(); // refetches the tasks
         } else {
           throw new Error("Request failed");
         }
@@ -112,7 +135,7 @@ export default function AddTaskModal({ onClose }: { onClose: () => void }) {
                             </div>
                         </div>
                         <div className="task-editor-actions-buttons">
-                            <button className={`add-task-button ${heading ? 'filled' : ''}`} type='submit' ><span>Add Task</span></button>
+                            <button className={`add-task-button ${heading ? 'filled' : ''}`} type='submit' ><span>{interactionButton||"Add"} Task</span></button>
                             <button className='cancel-button' onClick={onClose}><span>Cancel</span></button>
                         </div>
                     </div>

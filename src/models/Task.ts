@@ -28,7 +28,7 @@ const TaskSchema = new Schema<TaskDocument>({
     },
     description: {
         type: String,
-        required: [true, 'Description is required']
+        required: false
     },
     comment: {
         type: String,

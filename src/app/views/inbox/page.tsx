@@ -86,24 +86,30 @@ const Inbox = () => {
   }, [session?.accessToken])
 
   return (
-    <div>
+    <div className='mt-5'>
       <b className="text-[26px] flex pb-1">Inbox</b>
-      
+      {/* Rem-task: Sort the task by date */}
+      {/* Rem-task: Update the task list dynamically. */}
       {
         Object.keys(taskList).map(priority => (
           <div key={priority} className={`${taskList[priority].length > 0 ? 'flex flex-col mb-2': ''}`}>
             {taskList[priority].length > 0 && (
-              <><b className='flex text-[16px] pb-1 pt-3 border-b border-b-zinc-100'>{priority}</b><ul>
-                {taskList[priority].map(task => (
-                  <TaskCard key={task._id} task={task} onDelete={handleDelete} />
-                ))}
-              </ul></>
+              <>
+                <b className='flex text-[16px] pb-1 pt-3 border-b border-b-zinc-100'>{priority}</b>
+                <ul>
+                  {taskList[priority].map(task => (
+                    <TaskCard key={task._id} task={task} onDelete={handleDelete} dateNeeded={true} onTaskAdded={fetchUserTasks}/>
+                  ))}
+                </ul>
+              </>
             )}
             
           </div>
         ))
       }
-      <AddTask/>
+      <div className='mt-2'>
+        <AddTask onTaskAdded={fetchUserTasks}/>
+      </div>
     </div>
   );
 };

@@ -58,7 +58,6 @@ export async function GET(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const { taskId } = await req.json(); // Expect taskId in the body
-    // console.log(taskId, "taskId2");
     
     const deletedTask = await Task.findByIdAndDelete(taskId);
 
@@ -70,5 +69,40 @@ export async function DELETE(req: Request) {
   } catch (e) {
     console.error('Error in task DELETE request', e);
     return NextResponse.json({ error: e }, { status: 500 });
+  }
+}
+
+export async function PUT(req: Request) {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session || !session.user) {
+    return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
+  }
+
+  try {
+    const { taskId, dueDate, heading, description, comment, priority } = await req.json();
+    await connectDB();
+    const taskToUpdate = await Task.findById(taskId);
+
+    if (!taskToUpdate) {
+      return NextResponse.json({error: "Task not found!"}, {status: 404});
+    }
+
+    // Update the task fields
+    taskToUpdate.heading = heading; 
+    taskToUpdate.description = description;
+    taskToUpdate.dueDate = dueDate;
+    taskToUpdate.comment = comment;
+    taskToUpdate.priority = priority;
+
+    // Save the updated task
+    const updatedTask = await taskToUpdate.save();
+
+    return NextResponse.json({ message: 'Task updated successfully!', task: updatedTask }, { status: 200 });
+
+  } catch (e: any) {
+    console.error('Error in updating the task!');
+    return NextResponse.json({error: e.message}, {status: 500});
   }
 }

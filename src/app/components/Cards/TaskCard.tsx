@@ -2,6 +2,7 @@ import { Checkbox } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import CustomizeTask from "./CustomizeTask";
+import AddTaskModal from "../Modal/AddTaskModal";
 
 type Task = {
   _id: string;
@@ -18,11 +19,14 @@ type Task = {
 type TaskCardProps = {
   task: Task;
   onDelete: (taskId: string) => void;
+  dateNeeded: boolean;
+  onTaskAdded: () => void;
 };
 
-export default function TaskCard({ task, onDelete }: TaskCardProps) {
+export default function TaskCard({ task, onDelete, dateNeeded, onTaskAdded }: TaskCardProps) {
   const { data: session } = useSession();
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -53,6 +57,13 @@ export default function TaskCard({ task, onDelete }: TaskCardProps) {
       console.error('Failed to delete task');
     }
   };
+  const handleEditTaskOpen = () => {
+    setIsModalOpen(true);
+  }
+
+  function handleCloseModal(): void {
+    setIsModalOpen(false);
+  }
 
   return (
     <div
@@ -76,21 +87,22 @@ export default function TaskCard({ task, onDelete }: TaskCardProps) {
         <div className="flex flex-col gap-0.5">
           <div className="text-[18px]">{task.heading}</div>
           {task.description && <div className="text-[14px]">{task.description}</div>}
-          <div className="text-[14px] text-red-400">
+          {dateNeeded && <div className="text-[14px] text-red-400">
             {new Date(task.dueDate).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'long',
               day: 'numeric',
             })}
-          </div>
+          </div>}
         </div>
       </div>
 
       {isHovered && (
         <div className="absolute top-0 right-0 pt-2">
-          <CustomizeTask />
+          <CustomizeTask onOpen={handleEditTaskOpen}/>
         </div>
       )}
+      {isModalOpen && <AddTaskModal onTaskAdded={onTaskAdded} onClose={handleCloseModal} task={task} interactionButton={"Update"}/>}
     </div>
   );
 }
