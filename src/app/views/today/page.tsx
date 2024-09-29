@@ -24,7 +24,6 @@ const Today = () => {
   const [taskList, setTaskList] = useState<TaskList>({});
 
   const fetchUserTasks = async () => {
-    console.log('shivam sharma')
     try {
       const response = await fetch('/api/task', {
         method: 'GET',
