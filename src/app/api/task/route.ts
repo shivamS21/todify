@@ -3,6 +3,7 @@ import Task from '@/models/Task';
 import { connectDB } from '@/lib/mongodb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import redis from "@/lib/redis";
 
 // POST request handler
 export async function POST(req: Request) {
@@ -32,6 +33,12 @@ export async function POST(req: Request) {
 
     await connectDB();
     const savedTask = await newTask.save();
+    await redis.del(`userId:${userId}`);
+
+    // Fetch updated tasks from mongoDb. GET request
+    const updatedTasks = await Task.find({userId});
+
+    await redis.set(`tasks:${userId}`, JSON.stringify(updatedTasks));
 
     return NextResponse.json({ message: 'Task created successfully', task: savedTask }, { status: 201 });
 
@@ -45,7 +52,15 @@ export async function POST(req: Request) {
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    const userTasks = await Task.find({ userId: session?.user.id }); // Array of tasks
+    const userId = session?.user.id
+    let cachedData = await redis.get(`tasks:${userId}`);
+
+    let userTasks;
+    if (cachedData) {
+      userTasks = JSON.parse(cachedData)
+    } else {
+      userTasks = await Task.find({ userId })
+    }
     return NextResponse.json({ userTasks }, { status: 200 });
 
   } catch (e) {
@@ -57,9 +72,12 @@ export async function GET(req: Request) {
 // DELETE request handler
 export async function DELETE(req: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    const userId = session?.user.id;
     const { taskId } = await req.json(); // Expect taskId in the body
     
     const deletedTask = await Task.findByIdAndDelete(taskId);
+    await redis.del(`userId:${userId}`)
 
     if (!deletedTask) {
       return NextResponse.json({ message: "Task not found" }, { status: 404 });
@@ -75,6 +93,7 @@ export async function DELETE(req: Request) {
 export async function PUT(req: Request) {
 
   const session = await getServerSession(authOptions);
+  const userId = session?.user.id;
 
   if (!session || !session.user) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
@@ -98,7 +117,12 @@ export async function PUT(req: Request) {
 
     // Save the updated task
     const updatedTask = await taskToUpdate.save();
+    await redis.del(`userId:${userId}`);
 
+    const updatedTasksFromCache = await Task.find({userId});
+
+    await redis.set(`tasks:${userId}`, JSON.stringify(updatedTasksFromCache));
+    
     return NextResponse.json({ message: 'Task updated successfully!', task: updatedTask }, { status: 200 });
 
   } catch (e: any) {
@@ -106,3 +130,20 @@ export async function PUT(req: Request) {
     return NextResponse.json({error: e.message}, {status: 500});
   }
 }
+
+// const getSession = async () => {
+//   return await getServerSession(authOptions);
+// }
+
+// type Session = {
+//   user: {
+//     id: string
+//   }
+// }
+// const getUserId = async (session: Session | any) => {
+//   // return session.user.id
+//   if (session) {
+//     return session.user.id;
+//   }
+//   throw new Error("User is not authenticated");
+// }

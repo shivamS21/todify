@@ -1,6 +1,9 @@
 'use client';
 import AddTask from '@/app/components/Cards/AddTask';
 import TaskCard from '@/app/components/Cards/TaskCard';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import ChevronRightOutlinedIcon from '@mui/icons-material/ChevronRightOutlined';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 
@@ -17,6 +20,10 @@ type Task = {
 };
 const Today = () => {
   const { data: session, status} = useSession();
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const toggleButton = () => {
+    setIsExpanded(!isExpanded);
+  }
 
   type TaskList = {
     [key: string] : Task[];
@@ -37,7 +44,6 @@ const Today = () => {
       }
 
       const data = await response.json();
-      // manageTaskList(data.userTasks)
       setTaskList(data.userTasks)
     } catch (error) {
       console.error('Error fetching tasks', error); // Find if consoling errors really important for production apps
@@ -82,8 +88,27 @@ const Today = () => {
   }, [session?.accessToken])
 
   return (
-    <div className='mt-5'>
+    <div className='mt-5 flex flex-col gap-1'>
       <b className="text-[26px] flex pb-1">Today</b>
+      <div className='flex items-center gap-1 pb-4'>
+        <CheckCircleOutlinedIcon sx={{ fontSize:16, color: 'gray'}}/>
+        <div className='flex items-center text-gray-500'>
+          <span className='text-[14px]'>{taskList && taskList.userTasks ? taskList.userTasks.length : 0} Tasks</span>
+        </div>
+        
+      </div>
+      <div className='flex gap-2 items-center mb-4'>
+        <div onClick={toggleButton} className='cursor-pointer flex items-center justify-center hover:bg-gray-200 rounded -ml-7 w-5 h-5'>
+          {
+            isExpanded ? <ChevronRightOutlinedIcon sx={{ fontSize:20 }} className='transition-transform duration-500 ease-in-out transform scale-125'/> :
+            <KeyboardArrowDownOutlinedIcon sx={{ fontSize:20 }} className='transition-transform duration-300 ease-in-out transform scale-125'/>
+          }
+        </div>
+        <div className='flex items-center w-full border-b border-solid border-gray-300 pb-1'>
+          <span className='text-[16px]'>Overdue</span>
+        </div>
+
+      </div>
       <b className="flex text-[16px] pb-1 pt-3 border-b border-b-zinc-100">{getFormattedDate()}</b>
 
       {

@@ -27,10 +27,10 @@ export default function AddTask({onTaskAdded} : {onTaskAdded: () => void}) {
             >
                 <AddIcon className='mr-0.5 ml-[-5px]'
                 sx={{
-                    '& .MuiSvgIcon-root': { fontSize: 16 },
+                    '& .MuiSvgIcon-root': { fontSize: 12 },
                     color: isHover?'rgb(239 68 68)':'black',
                 }}/>
-                <span className={`text-[16px] ${isHover ? 'text-red-500' : 'text-black'}`}>Add Task</span>
+                <span className={`text-[14px] ${isHover ? 'text-red-500' : 'text-black'}`}>Add Task</span>
         </button>
         {/* Render the modal if it's open */}
         {isModalOpen && <AddTaskModal onTaskAdded={onTaskAdded} onClose={handleCloseModal} />}
