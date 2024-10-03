@@ -19,7 +19,7 @@
     gap:4px;
 }
 .user:hover {
-    background-color: #b1aeae;
+    background-color: #e7e1e1;
 }
 .avtar {
     margin: 0px 6px;
@@ -45,5 +45,5 @@
 }
 
 .notif-sidebar button:hover {
-    background-color: #b1aeae;
+    background-color: #e7e1e1;
 }
