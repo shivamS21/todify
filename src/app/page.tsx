@@ -11,9 +11,5 @@ export default async function Home() {
   if (session?.user) {
     redirect('/views/today');
   }
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center">
-      {redirect('/login')}
-    </main>
-  );
+  {redirect('/login')}
 }

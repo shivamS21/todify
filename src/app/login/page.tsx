@@ -6,23 +6,40 @@ import Link from "next/link";
 import Image from "next/image";
 import { checkUser } from "../utility/checkGoogleSignInNewUser";
 import Loading from "../components/Loading";
+import { connectDB } from "@/lib/mongodb";
 
 export default function Login() {
+    useEffect(() => {
+        const initializeDBConnection = async () => {
+            try {
+                await connectDB(); // Connect to MongoDB
+            } catch (error) {
+                console.error('Failed to connect to MongoDB:', error);
+            }
+        };
+
+        initializeDBConnection(); // Call the function to connect
+    }, []);
+
     const [error, setError] = useState("");
     const { data: session, status } = useSession();
     const router = useRouter();
     const redirectPath = "/views/today";
+    const [checkUserResolved, setCheckUserResolved] = useState<boolean>(false);
 
     useEffect(() => {
         // If the user is already authenticated, redirect them to the intended page
+        console.log(status, "changing status")
         if (status === "authenticated") {
-          checkUser(session).then(loginResult => {
-            if (loginResult?.success) {
-              router.push(redirectPath);
-            } else {
-                router.push('/login');
-            }
-          });
+            setCheckUserResolved(true);
+            checkUser(session).then(loginResult => {
+                setCheckUserResolved(false);
+                if (loginResult?.success) {
+                router.push(redirectPath);
+                } else {
+                    router.push('/login');
+                }
+            });
         }
     }, [session, status, router]);
 
@@ -45,7 +62,7 @@ export default function Login() {
         }
     };
 
-    if (status === "loading") {
+    if (status === "loading" || checkUserResolved) {
         return <Loading/>
     }
 
