@@ -87,6 +87,7 @@ export default function Register() {
                     placeholder="Password"
                     className="w-full h-11 border border-solid border-black p-2 rounded"
                     name="password"
+                    autoComplete="current-password"
                   />
                 </div>
         

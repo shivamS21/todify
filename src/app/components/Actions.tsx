@@ -52,43 +52,43 @@ const Actions = ({ selectedButton, setSelectedButton }: { selectedButton: string
         onClick={handleAddTaskClick}
       >
         <AddCircleOutlineOutlinedIcon className='ml-1.5 mr-1.5'/>
-        <span> Add Task</span>
+        <span className='text-sm'> Add Task</span>
       </button>
       <button
         className={`search ${selectedButton === 'search' ? 'selected' : ''}`}
         onClick={() => handleButtonClick('search')}
       >
         <SearchOutlinedIcon className='ml-1.5 mr-1.5'/>
-        <span> Search</span>
+        <span className='text-sm'> Search</span>
       </button>
       <button
         className={`inbox ${selectedButton === 'inbox' ? 'selected' : ''}`}
         onClick={() => handleButtonClick('inbox')}
       >
         <MailOutlinedIcon className='ml-1.5 mr-1.5'/>
-        <span> Inbox</span>
+        <span className='text-sm'> Inbox</span>
       </button>
       <button
         className={`today ${selectedButton === 'today' ? 'selected' : ''}`}
         onClick={() => handleButtonClick('today')}
       >
         <TodayOutlinedIcon className='ml-1.5 mr-1.5'/>
-        <span> Today</span>
+        <span className='text-sm'> Today</span>
       </button>
       <button
         className={`upcoming ${selectedButton === 'upcoming' ? 'selected' : ''}`}
         onClick={() => handleButtonClick('upcoming')}
       >
         <CalendarMonthOutlinedIcon className='ml-1.5 mr-1.5'/>
-        <span> Upcoming</span>
+        <span className='text-sm'> Upcoming</span>
       </button>
       <button
         className={`filters-label ${selectedButton === 'filters-label' ? 'selected' : ''}`}
         onClick={() => handleButtonClick('filters-label')}
       >
         <FilterAltOutlinedIcon className='ml-1.5 mr-1.5'/>
-        <span> Filters & Labels</span>
-      </button>
+        <span className='text-sm'> Filters & Labels</span>
+      </button >
       {/* Render the modal if it's open */}
       {isModalOpen && <AddTaskModal onClose={handleCloseModal} />}
     </div>

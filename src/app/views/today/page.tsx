@@ -1,6 +1,8 @@
 'use client';
 import AddTask from '@/app/components/Cards/AddTask';
+import Overdue from '@/app/components/Cards/Overdue';
 import TaskCard from '@/app/components/Cards/TaskCard';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import { useSession } from 'next-auth/react'
 import React, { useEffect, useState } from 'react'
 
@@ -17,6 +19,25 @@ type Task = {
 };
 const Today = () => {
   const { data: session, status} = useSession();
+  const [totalDueTasks, setTotalDueTasks] = useState(0);
+
+  const getDueTasks = () => {
+    let dueTasks = 0;
+
+    if (Array.isArray(taskList)) {
+      const today = new Date();
+      today.setHours(0,0,0,0);
+      
+      for (let i = 0; i < taskList.length; i++) {
+        const task = taskList[i];
+
+        if (new Date(task.dueDate) < today) {
+          dueTasks++;
+        }
+      }
+    }
+    setTotalDueTasks(dueTasks);
+  }
 
   type TaskList = {
     [key: string] : Task[];
@@ -37,7 +58,6 @@ const Today = () => {
       }
 
       const data = await response.json();
-      // manageTaskList(data.userTasks)
       setTaskList(data.userTasks)
     } catch (error) {
       console.error('Error fetching tasks', error); // Find if consoling errors really important for production apps
@@ -81,9 +101,21 @@ const Today = () => {
     fetchUserTasks(); 
   }, [session?.accessToken])
 
+  useEffect(()=>{
+    getDueTasks();
+  }, [taskList])
+
   return (
-    <div className='mt-5'>
+    <div className='mt-5 flex flex-col gap-1'>
       <b className="text-[26px] flex pb-1">Today</b>
+      <div className='flex items-center gap-1 pb-4'>
+        <CheckCircleOutlinedIcon sx={{ fontSize:16, color: 'gray'}}/>
+        <div className='flex items-center text-gray-500'>
+          <span className='text-[14px]'>{totalDueTasks} Tasks</span>
+        </div>
+        
+      </div>
+      <Overdue/>
       <b className="flex text-[16px] pb-1 pt-3 border-b border-b-zinc-100">{getFormattedDate()}</b>
 
       {
