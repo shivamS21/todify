@@ -91,7 +91,6 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       // Add the accessToken and user ID to the session object
-
       // extract user from database
       const existingUser = await User.findOne({ email: session.user.email });
       if (existingUser) {
