@@ -1,6 +1,8 @@
-import Redis from 'ioredis';
-const { REDIS_URL} = process.env
+import { Redis } from '@upstash/redis'
 
-const redis = new Redis(REDIS_URL as string);  // Set REDIS_URL in environment variables
+const redis = new Redis({
+  url: process.env.REDIS_URL,
+  token: process.env.REDIS_TOKEN,
+})
 
 export default redis;

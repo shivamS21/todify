@@ -48,32 +48,43 @@ export async function POST(req: Request) {
   }
 }
 
-// GET request handler
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    const userId = session?.user.id
-    let cachedData = await redis.get(`tasks:${userId}`);
+    const userId = session?.user.id;
+    let cachedData = await redis.get(`tasks:${userId}`) as string | null;
 
     let userTasks;
     if (cachedData) {
-      userTasks = JSON.parse(cachedData)
+      if (typeof cachedData === 'string') {
+        try {
+          userTasks = JSON.parse(cachedData)
+        } catch (err) {
+          console.error('Failed to parse cached data:', err)
+          userTasks = await Task.find({ userId })
+          await redis.set(`tasks:${userId}`, JSON.stringify(userTasks))
+        }
+      } else {
+        userTasks = cachedData
+      }
     } else {
-      userTasks = await Task.find({ userId })
+      userTasks = await Task.find({ userId });
+      await redis.set(`tasks:${userId}`, JSON.stringify(userTasks)); 
     }
-    return NextResponse.json({ userTasks }, { status: 200 });
 
+    return NextResponse.json({ userTasks }, { status: 200 });
   } catch (e) {
     console.error('Error in task GET request', e);
     return NextResponse.json({ error: e }, { status: 500 });
   }
 }
 
+
 // DELETE request handler
 export async function DELETE(req: Request) {
   try {
     const session = await getServerSession(authOptions);
-    const userId = session?.user.id;
+    const userId = session?.user?.id;
     const { taskId } = await req.json(); // Expect taskId in the body
     
     const deletedTask = await Task.findByIdAndDelete(taskId);
