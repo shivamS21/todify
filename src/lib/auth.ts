@@ -9,9 +9,9 @@ import jwt from "jsonwebtoken";
 // Extend Session and JWT types
 declare module "next-auth" {
   interface Session {
-    accessToken?: string; // Add accessToken field
+    accessToken?: string; 
     user: {
-      id?: string;  // Add id field to user object
+      id?: string; 
       name?: string;
       email?: string;
       image?: string;
@@ -19,8 +19,8 @@ declare module "next-auth" {
   }
 
   interface JWT {
-    accessToken?: string; // Add accessToken field
-    id?: string;  // Add user ID to JWT
+    accessToken?: string; 
+    id?: string;  
   }
 }
 export const authOptions: NextAuthOptions = {
