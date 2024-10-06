@@ -5,7 +5,11 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import redis from "@/lib/redis";
 
-// POST request handler
+/** 
+ * @desc Create Task
+ * @route POST /api/task
+ * @access private
+ */
 export async function POST(req: Request) {
   try {
 
@@ -15,13 +19,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
     }
 
-    // Parse the request body
     const { heading, description, dueDate, comment, priority } = await req.json();
 
-    // Use the user's ID from the session
     const userId = session.user.id;
 
-    // Create a new task with the user information and details from the request body
+    // new Task
     const newTask = new Task({
       userId,
       heading,
@@ -35,7 +37,7 @@ export async function POST(req: Request) {
     const savedTask = await newTask.save();
     await redis.del(`userId:${userId}`);
 
-    // Fetch updated tasks from mongoDb. GET request
+    // Fetch updated tasks from mongoDb
     const updatedTasks = await Task.find({userId});
 
     await redis.set(`tasks:${userId}`, JSON.stringify(updatedTasks));
@@ -48,6 +50,11 @@ export async function POST(req: Request) {
   }
 }
 
+/** 
+ * @desc Get all Tasks
+ * @route GET /api/task
+ * @access private
+ */
 export async function GET(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -80,7 +87,11 @@ export async function GET(req: Request) {
 }
 
 
-// DELETE request handler
+/** 
+ * @desc Delete a Task
+ * @route DELETE /api/task
+ * @access private
+ */
 export async function DELETE(req: Request) {
   try {
     const session = await getServerSession(authOptions);
@@ -101,6 +112,11 @@ export async function DELETE(req: Request) {
   }
 }
 
+/** 
+ * @desc Update a Task
+ * @route PUT /api/task
+ * @access private
+ */
 export async function PUT(req: Request) {
 
   const session = await getServerSession(authOptions);
@@ -126,7 +142,6 @@ export async function PUT(req: Request) {
     taskToUpdate.comment = comment;
     taskToUpdate.priority = priority;
 
-    // Save the updated task
     const updatedTask = await taskToUpdate.save();
     await redis.del(`userId:${userId}`);
 

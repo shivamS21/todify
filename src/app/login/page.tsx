@@ -1,7 +1,7 @@
 "use client";
 import { FormEvent, useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { checkUser } from "../utility/checkGoogleSignInNewUser";
@@ -12,13 +12,13 @@ export default function Login() {
     useEffect(() => {
         const initializeDBConnection = async () => {
             try {
-                await connectDB(); // Connect to MongoDB
+                await connectDB(); 
             } catch (error) {
                 console.error('Failed to connect to MongoDB:', error);
             }
         };
 
-        initializeDBConnection(); // Call the function to connect
+        initializeDBConnection(); 
     }, []);
 
     const [error, setError] = useState("");
@@ -28,8 +28,6 @@ export default function Login() {
     const [checkUserResolved, setCheckUserResolved] = useState<boolean>(false);
 
     useEffect(() => {
-        // If the user is already authenticated, redirect them to the intended page
-        console.log(status, "changing status")
         if (status === "authenticated") {
             setCheckUserResolved(true);
             checkUser(session).then(loginResult => {
@@ -58,7 +56,7 @@ export default function Login() {
         }
 
         if (res?.ok) {
-            router.push(redirectPath); // Redirect to the intended page
+            router.push(redirectPath);
         }
     };
 
