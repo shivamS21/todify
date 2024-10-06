@@ -4,7 +4,7 @@ import { connectDB } from '@/lib/mongodb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import redis from "@/lib/redis";
-let firstTime = true
+
 /** 
  * @desc Create Task
  * @route POST /api/task
@@ -62,8 +62,7 @@ export async function GET(req: Request) {
     let cachedData = await redis.get(`tasks:${userId}`) as string | null;
 
     let userTasks;
-    if (cachedData && !firstTime) {
-      firstTime = false
+    if (cachedData) {
       if (typeof cachedData === 'string') {
         try {
           userTasks = JSON.parse(cachedData)
@@ -76,7 +75,6 @@ export async function GET(req: Request) {
         userTasks = cachedData
       }
     } else {
-      firstTime = false
       userTasks = await Task.find({ userId });
       await redis.set(`tasks:${userId}`, JSON.stringify(userTasks)); 
     }
