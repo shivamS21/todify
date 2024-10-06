@@ -1,4 +1,4 @@
-'use server'
+"use server"
 import mongoose from "mongoose";
 const { CONNECTION_STRING } = process.env;
 
