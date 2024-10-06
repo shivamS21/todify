@@ -4,6 +4,7 @@ const { CONNECTION_STRING } = process.env;
 
 let isConnected = false
 export const connectDB = async () => {
+  console.log('ud chala mein')
   if (isConnected) {
     return Promise.resolve(true)
   }

@@ -64,7 +64,6 @@ export async function GET(req: Request) {
     let userTasks;
     if (cachedData) {
       if (typeof cachedData === 'string') {
-        console.log(cachedData, "This is the cached data")
         try {
           userTasks = JSON.parse(cachedData)
         } catch (err) {
