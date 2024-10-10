@@ -10,15 +10,15 @@ const PlaceHolder = () => {
 
     // image need to be provided by the user
     const userImage = user?.image ?? 'https://images.pexels.com/photos/45853/grey-crowned-crane-bird-crane-animal-45853.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2';
-    const userName = user?.name?.split(' ')[0] ?? '';
+    const userName = user?.name?.split(' ')[0].toUpperCase() ?? '';
     
   return (
     <div className="placeHolder">
         <div className="placeHolder-content">
             <button className="user">
-                <div className="avtar border border-orange-300 rounded-full">
+                {/* <div className="avtar border border-orange-300 rounded-full">
                     <Image src={userImage} width={36} height={36} className="rounded-full" alt="User Avatar"/>
-                </div>
+                </div> */}
                 <div className="username">
                     {userName}
                 </div>
