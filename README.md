@@ -4,7 +4,13 @@
 
 `Sweet Precaution: Use microsoft-edge to avoid serverless function timeout`
 
-![Next.js](https://img.shields.io/badge/Next.js-12.1-blue.svg) ![MongoDB](https://img.shields.io/badge/MongoDB-4.4-green.svg) ![Redis](https://img.shields.io/badge/Redis-6.2-red.svg) ![Node.js](https://img.shields.io/badge/Node.js-14.x-brightgreen.svg) ![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Next.js](https://img.shields.io/badge/Next.js-12.1-blue.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-4.x-blue.svg)
+![MongoDB](https://img.shields.io/badge/MongoDB-4.4-green.svg)
+![Redis](https://img.shields.io/badge/Redis-6.2-red.svg)
+![Node.js](https://img.shields.io/badge/Node.js-14.x-brightgreen.svg)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+
 
 ---
 
