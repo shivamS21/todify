@@ -41,7 +41,7 @@
 ---
 
 ### 🔧 **Tech Stack**
-- **Frontend**: Next.js, Tailwind CSS, React
+- **Frontend**: Next.js, Tailwind CSS, React, Typescript
 - **Backend**: Node.js, MongoDB, Redis
 - **Authentication**: NextAuth.js
 
