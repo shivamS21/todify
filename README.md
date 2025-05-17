@@ -46,4 +46,7 @@
 - **Authentication**: NextAuth.js
 
 ---
+![diagram](https://github.com/user-attachments/assets/fac30e9c-78c2-4026-84f9-89630d11a413)
+---
+
 
